@@ -1,0 +1,572 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #F5F5F5;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        #resetButton {
+            padding: 10px 20px;
+            font-size: 1em;
+            border: none;
+            border-radius: 5px;
+            color: white;
+            background-color: #FF7573; /* Color rojo claro */
+            cursor: pointer;
+        }
+      
+        #megaClick {
+            background-color: #02727B;
+            transform: skew(-20deg);
+        }
+
+        #autoclick,
+        #superclick {
+            background-color: #4F9C54;
+            transform: skew(-20deg);
+        }
+
+        #autoclick:hover,
+        #superclick:hover {
+            background-color: #45a049;
+        }
+
+        #prestigioButton {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 10px;
+            font-size: 1em;
+            background-color: #1E4F5F;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        #prestigioMenu {
+            position: fixed;
+            top: 60px;
+            right: 30px;
+            background-color: #4F9C54;
+            padding: 10px;
+            border-radius: 5px;
+            display: none;
+        }
+
+        .prestigioItem {
+            margin-bottom: 10px;
+        }
+
+        .prestigioButton {
+            display: block;
+            margin-top: 5px;
+            padding: 5px;
+            font-size: 0.8em;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+        }
+
+        .prestigioButton:hover {
+            background-color: #45a049;
+        }
+
+        #cookie {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            background-color: #DAA520;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            margin: 20px auto;
+            box-shadow: 0px 0px 10px 3px #888888;
+        }
+
+        #counter {
+            font-size: 2em;
+            margin-top: 20px;
+        }
+
+        button {
+            display: block;
+            margin: 10px auto;
+            padding: 10px 20px;
+            font-size: 1em;
+            border: none;
+            border-radius: 5px;
+            color: white;
+            background-color: #4CAF50;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+        #codigoSection {
+            display: flex;
+            align-items: center;
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+        }
+
+        #codigoLabel {
+            margin-right: 10px;
+            color: #02727B;
+        }
+
+        #codigoInput {
+            padding: 8px;
+            border: 1px solid #02727B;
+            border-radius: 5px;
+            outline: none;
+        }
+
+        #codigoButton {
+            padding: 8px;
+            background-color: #02727B;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+      
+        #addClicksContainer {
+            position: fixed;
+            right: 20px;
+            bottom: 20px;
+            display: flex;
+            align-items: center;
+        }
+
+        #clickAmount {
+            margin-right: 10px;
+        }
+
+        #megaClick {
+            display: none;
+        }
+
+        #menu {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            display: none;
+            justify-content: center;
+            align-items: center;
+        }
+
+        #menuContent {
+            background-color: #808080;
+            padding: 32px;
+            border-radius: 10px;
+            position: relative;
+        }
+
+        #closeMenu {
+            position: absolute;
+            top: -15px;
+            right: 1px;
+            background-color: #FF7573;
+        }
+
+        #openMenu {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+        }
+
+        #temporaryMultiplierTime {
+            display: none;
+            margin-top: 20px;
+        }
+
+        .plusOne {
+            position: absolute;
+            animation: fadeOut 1s linear forwards;
+            font-weight: bold;
+            font-size: 2em;
+        }
+
+        .prestigeAnimation {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: rgba(255, 255, 255, 0.9);
+            padding: 20px;
+            border-radius: 10px;
+            display: none;
+            z-index: 1000;
+        }
+
+        @keyframes fadeOut {
+            from {
+                opacity: 1;
+            }
+
+            to {
+                opacity: 0;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div id="cookie"></div>
+    <div id="counter">Puntos: 0</div>
+    <button id="autoclick">𝙲𝚘𝚖𝚙𝚛𝚊𝚛 𝙰𝚞𝚝𝚘C𝚕𝚒𝚌𝚔 (𝟷𝟶𝟶 𝚌𝚕𝚒𝚌𝚔𝚜)</button>
+    <button id="superclick">𝙲𝚘𝚖𝚙𝚛𝚊𝚛 𝚂𝚞𝚙𝚎𝚛𝙲𝚕𝚒𝚌𝚔 (𝟻𝟶𝟶 𝚌𝚕𝚒𝚌𝚔𝚜)</button>
+    <button id="megaClick">ᑕᗝᗰᑭᖇᗩᖇ ᗰᗴǤᗩᑕᒪᎥᑕᛕ (1丅 ᑕᒪᎥᑕᛕᔕ)</button>
+    <div id="temporaryMultiplierTime">Tiempo restante: 10:00</div>
+    <button id="openMenu">Tienda</button>
+    <div id="menu">
+        <div id="menuContent">
+            <button id="closeMenu">Cerrar</button>
+            <button id="buyPermanentMultiplier">Comprar x2 permanente (2500T clicks)</button>
+            <button id="buyTemporaryMultiplier">Comprar x2 temporal (10 min) (100T clicks)</button>
+        </div>
+    </div>
+    <div id="codigoSection">
+        <div id="codigoLabel">Codigos:</div>
+        <input id="codigoInput" type="text" placeholder="Ingrese su código">
+        <button id="codigoButton">Ingresar</button>
+    </div>
+    <!-- Agrega el botón "Prestigio" en la esquina superior izquierda -->
+    <button id="prestigioButton">𝐏𝐫𝐞𝐬𝐭𝐢𝐠𝐢𝐨</button>
+
+    <!-- Menú de Prestigio -->
+    <div id="prestigioMenu">
+        <div class="prestigioItem">
+            <span>Prestigio 1:</span>
+            <button class="prestigioButton" data-cost="50000000">Prestigio (50M)</button>
+        </div>
+        <div class="prestigioItem">
+            <span>Prestigio 2:</span>
+            <button class="prestigioButton" data-cost="750000000">Prestigio (750M)</button>
+        </div>
+        <div class="prestigioItem">
+            <span>Prestigio 3:</span>
+            <button class="prestigioButton" data-cost="500000000000">Prestigio (500B)</button>
+        </div>
+        <div class="prestigioItem">
+            <span>Prestigio 4:</span>
+            <button class="prestigioButton" data-cost="10000000000000">Prestigio (10T)</button>
+        </div>
+    </div>
+
+    <!-- Agrega el botón "Reiniciar" -->
+    <button id="resetButton">𝑅𝑒𝑖𝑛𝑖𝑐𝑖𝑎𝑟</button>
+
+
+    <!-- Animación de Prestigio -->
+    <div id="prestigeAnimation" class="prestigeAnimation"></div>
+
+    <script>
+        var cookie = document.getElementById('cookie');
+        var counter = document.getElementById('counter');
+        var autoclick = document.getElementById('autoclick');
+        var superclick = document.getElementById('superclick');
+        var megaClick = document.getElementById('megaClick');
+        var addClicks = document.getElementById('addClicks');
+        var clickAmount = document.getElementById('clickAmount');
+        var openMenu = document.getElementById('openMenu');
+        var closeMenu = document.getElementById('closeMenu');
+        var menu = document.getElementById('menu');
+        var buyPermanentMultiplier = document.getElementById('buyPermanentMultiplier');
+        var buyTemporaryMultiplier = document.getElementById('buyTemporaryMultiplier');
+        var temporaryMultiplierTime = document.getElementById('temporaryMultiplierTime');
+        var prestigioButton = document.getElementById('prestigioButton');
+        var prestigioMenu = document.getElementById('prestigioMenu');
+        var prestigioButtons = document.querySelectorAll('.prestigioButton');
+        var count = 0;
+        var multiplier = 1;
+        var autoclickCost = 100;
+        var superclickCost = 500;
+        var megaClickCost = 1e12;
+        var permanentMultiplierCost = 2500e12;
+        var temporaryMultiplierCost = 100e12;
+        var autoclickIntervalId;
+        var superclickIntervalId;
+        var megaClickIntervalId;
+        var temporaryMultiplierIntervalId;
+
+        function formatNumber(num) {
+    const abbreviations = ['', 'K', 'M', 'B', 'T', 'Q', 'Qa', 'Qi', 'Sx', 'Sp', 'Oc', 'No', 'De', 'UnD', 'DoD', 'TrD', 'QaD'];
+
+    let i = 0;
+    while (num >= 1e3 && i < abbreviations.length - 1) {
+        num /= 1e3;
+        i++;
+    }
+
+    return num.toFixed(2) + abbreviations[i];
+}
+
+        function updateCounter() {
+            counter.textContent = 'Puntos: ' + formatNumber(count);
+            if (count >= megaClickCost) {
+                megaClick.style.display = 'block';
+            }
+            requestAnimationFrame(updateCounter);
+        }
+
+        function showPlusOne(clicks) {
+            var plusOne = document.createElement('div');
+            plusOne.textContent = '+' + formatNumber(clicks);
+            plusOne.className = 'plusOne';
+            plusOne.style.left = Math.random() * (window.innerWidth - 200) + 100 + 'px';
+            plusOne.style.top = Math.random() * (window.innerHeight - 400) + 'px';
+            if (plusOne.style.top < (window.innerHeight / 2)) {
+                plusOne.style.top = (window.innerHeight / 2) + 'px';
+            }
+            document.body.appendChild(plusOne);
+            setTimeout(function() {
+                document.body.removeChild(plusOne);
+            }, 1000);
+        }
+
+        function showPrestigeAnimation(prestigeLevel) {
+            var prestigeAnimation = document.getElementById('prestigeAnimation');
+            prestigeAnimation.textContent = '¡Felicidades! Haz subido de prestigio, ahora eres prestigio: ' + prestigeLevel;
+            prestigeAnimation.style.display = 'block';
+            setTimeout(function() {
+                prestigeAnimation.style.display = 'none';
+            }, 3000);
+        }
+
+        cookie.addEventListener('click', function() {
+            count++;
+            showPlusOne(1);
+        });
+
+        autoclick.addEventListener('click', function() {
+            if (count >= autoclickCost) {
+                count -= autoclickCost;
+                autoclickIntervalId = setInterval(function() {
+                    count++;
+                    showPlusOne(1);
+                }, 1000);
+            } else {
+                alert('No tienes suficientes clicks para comprar un Autoclick.');
+            }
+        });
+
+        superclick.addEventListener('click', function() {
+            if (count >= superclickCost) {
+                count -= superclickCost;
+                if (!superclickIntervalId) {
+                    superclickIntervalId = setInterval(function() {
+                        count += 100 * multiplier;
+                        showPlusOne(100 * multiplier);
+                    }, 1000);
+                }
+            } else {
+                alert('No tienes suficientes clicks para comprar un Superclick.');
+            }
+        });
+
+        megaClick.addEventListener('click', function() {
+            if (count >= megaClickCost) {
+                count -= megaClickCost;
+                if (!megaClickIntervalId) {
+                    megaClickIntervalId = setInterval(function() {
+                        count += 500e12 * multiplier;
+                        showPlusOne(500e12 * multiplier);
+                    }, 1000);
+                }
+            } else {
+                alert('No tienes suficientes clicks para comprar un MegaClick.');
+            }
+        });
+
+var addClicks = document.getElementById('addClicks');
+
+if (addClicks) {
+    addClicks.addEventListener('click', function() {
+        count += parseInt(clickAmount.value);
+    });
+} else {
+    console.error("El elemento con ID 'addClicks' no se encontró en el HTML.");
+}
+
+        openMenu.addEventListener('click', function() {
+            menu.style.display = 'flex';
+        });
+
+        closeMenu.addEventListener('click', function() {
+            menu.style.display = 'none';
+        });
+
+        buyPermanentMultiplier.addEventListener('click', function() {
+            if (count >= permanentMultiplierCost) {
+                count -= permanentMultiplierCost;
+                multiplier *= 2;
+                menu.style.display = 'none';
+            } else {
+                alert('No tienes suficientes clicks para comprar un multiplicador permanente x2.');
+            }
+        });
+
+        buyTemporaryMultiplier.addEventListener('click', function() {
+            if (count >= temporaryMultiplierCost) {
+                count -= temporaryMultiplierCost;
+                multiplier *= 2;
+                menu.style.display = 'none';
+                temporaryMultiplierTime.style.display = 'block';
+
+                if (temporaryMultiplierIntervalId) {
+                    clearTimeout(temporaryMultiplierIntervalId);
+                }
+
+                var remainingTime = 10 * 60;
+                temporaryMultiplierIntervalId = setInterval(function() {
+                    remainingTime--;
+
+                    if (remainingTime > 0) {
+                                              var minutes = Math.floor(remainingTime / 60);
+                        var seconds = remainingTime % 60;
+                        temporaryMultiplierTime.textContent = 'Tiempo restante: ' +
+                            (minutes < 10 ? '0' : '') + minutes + ':' +
+                            (seconds < 10 ? '0' : '') + seconds;
+                    } else {
+                        temporaryMultiplierTime.textContent = 'Tiempo agotado';
+                        temporaryMultiplierTime.style.display = 'none';
+                        multiplier /= 2;
+                        clearInterval(temporaryMultiplierIntervalId);
+                    }
+                }, 1000);
+
+            } else {
+                alert('No tienes suficientes clicks para comprar un multiplicador temporal x2.');
+            }
+        });
+
+        // Agrega el evento al botón de Prestigio
+        prestigioButton.addEventListener('click', function() {
+            // Muestra o oculta el menú de Prestigio al hacer clic en el botón
+            prestigioMenu.style.display = (prestigioMenu.style.display === 'none' || prestigioMenu.style.display === '') ? 'block' : 'none';
+        });
+
+        // Agrega eventos a los botones de Prestigio
+        prestigioButtons.forEach(function(button) {
+            button.addEventListener('click', function() {
+                // Obtiene el costo del Prestigio desde el atributo 'data-cost'
+                var costoPrestigio = parseInt(button.getAttribute('data-cost'));
+
+                // Verifica si el usuario tiene suficientes puntos para comprar el Prestigio
+                if (count >= costoPrestigio) {
+                    // Reduce los puntos y realiza las acciones correspondientes al Prestigio
+                    count -= costoPrestigio;
+
+                    // Aquí puedes agregar las acciones específicas de cada Prestigio si es necesario
+
+                    // Cierra el menú de Prestigio
+                    prestigioMenu.style.display = 'none';
+
+                    // Muestra el mensaje de subida de prestigio
+                    showPrestigeAnimation(button.parentElement.textContent.trim());
+                } else {
+                    alert('No tienes suficientes puntos para comprar este Prestigio.');
+                }
+            });
+        });
+
+        // Evento al presionar la tecla Escape para cerrar el menú
+        window.addEventListener('keydown', function (event) {
+            if (event.key === 'Escape') {
+                // Verifica si los elementos aún existen antes de operar con ellos
+                if (menu) {
+                    menu.style.display = 'none';
+                }
+                if (prestigioMenu) {
+                    prestigioMenu.style.display = 'none';
+                }
+                // Actualiza el contador en la página después de cerrar el menú
+                updateCounter();
+            }
+        });
+
+        // Recuperar datos guardados al cargar la página
+        window.addEventListener('load', function() {
+            if (localStorage.getItem('clickCount')) {
+                count = parseInt(localStorage.getItem('clickCount'));
+                multiplier = parseInt(localStorage.getItem('multiplier')) || 1;
+                updateCounter();
+            }
+        });
+
+        // Guardar datos al salir de la página
+        window.addEventListener('beforeunload', function() {
+            localStorage.setItem('clickCount', count);
+            localStorage.setItem('multiplier', multiplier);
+        });
+
+        // Restablecer los datos al hacer clic en el botón "Reset"
+        var resetButton = document.getElementById('resetButton');
+
+        resetButton.addEventListener('click', function() {
+            localStorage.removeItem('clickCount');
+            localStorage.removeItem('multiplier');
+            count = 0;
+            multiplier = 1;
+            updateCounter();
+        });
+      
+              // Agrega el evento al botón "Reiniciar"
+        var resetButton = document.getElementById('resetButton');
+
+        resetButton.addEventListener('click', function() {
+            // Reinicia el contador y el multiplicador
+            count = 0;
+            multiplier = 1;
+
+            // Detiene los intervalos activos (Autoclick, Superclick, MegaClick, Temporizador temporal)
+            clearInterval(autoclickIntervalId);
+            clearInterval(superclickIntervalId);
+            clearInterval(megaClickIntervalId);
+            clearInterval(temporaryMultiplierIntervalId);
+
+            // Oculta el temporizador temporal si está visible
+            temporaryMultiplierTime.style.display = 'none';
+
+            // Actualiza el contador en la página
+            updateCounter();
+        });
+       // Agrega un evento al botón de código
+        var codigoButton = document.getElementById('codigoButton');
+        codigoButton.addEventListener('click', function () {
+            // Obtiene el código ingresado
+            var codigoIngresado = document.getElementById('codigoInput').value;
+
+            // Verifica si el código ingresado es "S3cR3t0"
+            if (codigoIngresado === 'S3cR3t0') {
+                // Incrementa el contador en 100T
+                count += 100e12;
+                // Actualiza el contador en la página
+                updateCounter();
+
+                // Muestra un mensaje de felicitaciones
+                alert('¡Felicidades! Has cambiado el código secreto. ¿Cómo lo sabías?');
+
+                // Limpia el input del código
+                document.getElementById('codigoInput').value = '';
+            }
+        });
+    </script>
+</body>
+
+</html>
